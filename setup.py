@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 try:
     from setuptools import setup
 except ImportError:
@@ -9,11 +10,21 @@ packages = [
     'pyvat',
 ]
 
+
 requires = [
     'requests>=1.0.0,<3.0',
     'pycountry',
     'enum34',
 ]
+try:
+    major, minor, patch = sys.version.split(maxsplit=1)[0].split(sep=".", maxsplit=2)
+except ValueError:
+    # Use default requirements since version is not determinable
+    pass
+else:
+    # if version >= 3.4 remove enum34 from requirements
+    if int(major) >= 3 and int(minor) >= 4:
+        requires.pop()
 
 tests_require = [
     'nose',
@@ -24,7 +35,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.3.2',
+    version='1.3.3',
     description='VAT validation for Python',
     author='Iconfinder',
     author_email='support@iconfinder.com',
@@ -48,5 +59,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ),
 )
